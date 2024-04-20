@@ -3,9 +3,24 @@
 int main(void) {
 	logger = log_create("log.log", "Servidor", 1, LOG_LEVEL_DEBUG);
 
+
 	int server_fd = iniciar_servidor();
 	log_info(logger, "Servidor listo para recibir al cliente");
 	int cliente_fd = esperar_cliente(server_fd);
+
+	int32_t handshake;
+	int32_t resultOk = 0;
+	int32_t resultError = -1;
+
+	recv(cliente_fd, &handshake, sizeof(int32_t), MSG_WAITALL);
+		if (handshake == 1) {
+    		send(cliente_fd, &resultOk, sizeof(int32_t), 0);
+			log_info(logger, "Handshake exitoso");
+		} else {
+    		send(cliente_fd, &resultError, sizeof(int32_t), 0);
+			log_info(logger, "Error en el handshake");
+	}
+
 
 	t_list* lista;
 	while (1) {
