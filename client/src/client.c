@@ -17,7 +17,7 @@ int main(void)
 	log_info(logger,"Hola! Soy un log");
 	// Usando el logger creado previamente
 	// Escribi: "Hola! Soy un log"
-
+	
 
 	/* ---------------- ARCHIVOS DE CONFIGURACION ---------------- */
 
@@ -45,12 +45,12 @@ int main(void)
 	int32_t handshake = 1;
 	int32_t result;
 
-	send(conexion, &handshake, sizeof(int32_t), 0);
+	send(conexion, &handshake, sizeof(int32_t), NULL);
 	recv(conexion, &result, sizeof(int32_t), MSG_WAITALL);
 	if (result == 0) {
-    	printf("Conexion exitosa");// Handshake OK
+    	log_info(logger,"Conexion exitosa");// Handshake OK
 	} else {
-   		 printf("Eror al establecer la conexion");// Handshake ERROR
+   		 log_info(logger,"Eror al establecer la conexion");// Handshake ERROR
 	}
 
 	// Enviamos al servidor el valor de CLAVE como mensaje
@@ -78,7 +78,7 @@ t_config* iniciar_config(void)
 	nuevo_config = config_create("cliente.config");
 	if (nuevo_config == NULL) {
 		printf("No se pudo crear el config!");
-    close(-1);
+    exit(-1);
 }
 	return nuevo_config;
 }
